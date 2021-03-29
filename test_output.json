@@ -1,0 +1,210 @@
+{
+    "Input_text": "As few as one and as many as 15 students have taken part in the series of 20-minute calls. Schwinn checks on their mental and physical health during the meetings. She tries to lift their spirits. And she asks them if the university is meeting their needs.",
+    "Total_words": 21,
+    "Total_avg_CEFR": 2.6952380952380954,
+    "DCL": {
+        "uncommon_ratio": 33.33333333333333,
+        "uncommon_words": [
+            "student",
+            "series",
+            "schwinn",
+            "mental",
+            "physical",
+            "asks",
+            "university"
+        ]
+    },
+    "CEFR": {
+        "Oxford": {
+            "avg_CEFR": 2.2857142857142856,
+            "classified_words": {
+                "A1": [
+                    "one",
+                    "many",
+                    "student",
+                    "part",
+                    "call",
+                    "check",
+                    "health",
+                    "meeting",
+                    "try",
+                    "university",
+                    "meeting",
+                    "need"
+                ],
+                "A2": [
+                    "series",
+                    "physical",
+                    "lift"
+                ],
+                "B1": [
+                    "mental",
+                    "spirit"
+                ],
+                "B2": [],
+                "C1": [],
+                "C2": [],
+                "N": [
+                    "taken",
+                    "minute",
+                    "schwinn",
+                    "asks"
+                ]
+            }
+        },
+        "Japanese": {
+            "avg_CEFR": 2.238095238095238,
+            "classified_words": {
+                "A1": [
+                    "one",
+                    "many",
+                    "student",
+                    "minute",
+                    "call",
+                    "check",
+                    "health",
+                    "meeting",
+                    "try",
+                    "meeting",
+                    "need"
+                ],
+                "A2": [
+                    "part",
+                    "physical",
+                    "university"
+                ],
+                "B1": [
+                    "series",
+                    "mental",
+                    "lift",
+                    "spirit"
+                ],
+                "B2": [],
+                "C1": [],
+                "C2": [],
+                "N": [
+                    "taken",
+                    "schwinn",
+                    "asks"
+                ]
+            }
+        }
+    },
+    "Freq": {
+        "Tv": {
+            "avg_CEFR": 2.857142857142857,
+            "classified_words": {
+                "A1": [
+                    "one",
+                    "many",
+                    "part",
+                    "minute",
+                    "meeting",
+                    "needs"
+                ],
+                "A2": [
+                    "taken",
+                    "calls"
+                ],
+                "B1": [
+                    "students",
+                    "physical",
+                    "health",
+                    "lift"
+                ],
+                "B2": [
+                    "series",
+                    "checks",
+                    "mental",
+                    "meetings",
+                    "tries",
+                    "spirits",
+                    "asks",
+                    "university"
+                ],
+                "C1": [],
+                "C2": [],
+                "N": [
+                    "schwinn"
+                ]
+            }
+        },
+        "Simpson": {
+            "avg_CEFR": 3.0476190476190474,
+            "classified_words": {
+                "A1": [
+                    "one",
+                    "many",
+                    "part",
+                    "minute",
+                    "needs"
+                ],
+                "A2": [
+                    "students",
+                    "taken",
+                    "meeting"
+                ],
+                "B1": [
+                    "series",
+                    "calls",
+                    "health"
+                ],
+                "B2": [
+                    "checks",
+                    "mental",
+                    "physical",
+                    "tries",
+                    "lift",
+                    "spirits",
+                    "asks",
+                    "university"
+                ],
+                "C1": [],
+                "C2": [],
+                "N": [
+                    "schwinn",
+                    "meetings"
+                ]
+            }
+        },
+        "Gutenberg": {
+            "avg_CEFR": 3.0476190476190474,
+            "classified_words": {
+                "A1": [
+                    "one",
+                    "many",
+                    "taken",
+                    "part"
+                ],
+                "A2": [
+                    "minute",
+                    "physical",
+                    "health",
+                    "meeting"
+                ],
+                "B1": [
+                    "series",
+                    "calls",
+                    "mental",
+                    "spirits",
+                    "needs"
+                ],
+                "B2": [
+                    "students",
+                    "meetings",
+                    "lift",
+                    "asks"
+                ],
+                "C1": [
+                    "checks",
+                    "tries",
+                    "university"
+                ],
+                "C2": [],
+                "N": [
+                    "schwinn"
+                ]
+            }
+        }
+    }
+}

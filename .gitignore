@@ -1,2 +1,5 @@
-#파이썬 가상환경
+#파이썬 가상환경 폴더
 capstone/
+
+#vscode설정
+.vscode/
