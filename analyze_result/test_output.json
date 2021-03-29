@@ -1,7 +1,9 @@
 {
     "Input_text": "As few as one and as many as 15 students have taken part in the series of 20-minute calls. Schwinn checks on their mental and physical health during the meetings. She tries to lift their spirits. And she asks them if the university is meeting their needs.",
     "Total_words": 21,
+    "Total_sentences": 4,
     "Total_avg_CEFR": 2.6952380952380954,
+    "DC_Readability": 5.5237333333333325,
     "DCL": {
         "uncommon_ratio": 33.33333333333333,
         "uncommon_words": [

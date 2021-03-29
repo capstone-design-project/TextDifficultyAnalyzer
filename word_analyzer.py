@@ -8,10 +8,12 @@ import re
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
+from nltk.tokenize import sent_tokenize
 lemma = WordNetLemmatizer()
 stem = PorterStemmer()
 # nltk.download('stopwords')
 # nltk.download('wordnet')
+# nltk.download('punkt')
 
 
 class WordAnalyzer:
@@ -102,13 +104,18 @@ class WordAnalyzer:
         for level in CEFR_level:
             score_sum += len(classified_words[level])*self.CEFR2score[level]
         return score_sum/total_words
+    # Dale Chall 가독성 점수 계산
+    def calReadability(self, uncommon_ratio, total_words, total_sentences):
+        return 0.1579*uncommon_ratio + 0.0496*(total_words/total_sentences)
 
 
     def analyzeText(self, text):
         output_json = {
             'Input_text' : '',
             'Total_words' : 0,
+            'Total_sentences' : 0,
             'Total_avg_CEFR' : 0,
+            'DC_Readability' : 0,
             'DCL' : {
                 'uncommon_ratio' : 0,
                 'uncommon_words' : [],
@@ -144,10 +151,11 @@ class WordAnalyzer:
         word_list_stem = self.stemming(word_list)
         total_words = len(word_list)
         output_json['Total_words'] = total_words
-        
+        output_json['Total_sentences'] = len(sent_tokenize(text))
 
         output_json['DCL']['uncommon_words'] = self.extractUncommon(word_list_stem)
         output_json['DCL']['uncommon_ratio'] = len(output_json['DCL']['uncommon_words'])/total_words*100
+        output_json['DC_Readability'] = self.calReadability(output_json['DCL']['uncommon_ratio'],output_json['Total_words'], output_json['Total_sentences'])
 
         output_json['CEFR']['Oxford']['classified_words'] = self.extractCEFR(word_list_stem,self.oxford_CEFR)
         output_json['CEFR']['Oxford']['avg_CEFR'] = self.calAvgCEFR(output_json['CEFR']['Oxford']['classified_words'], total_words)
@@ -163,3 +171,11 @@ class WordAnalyzer:
 
         output_json['Total_avg_CEFR'] = (output_json['CEFR']['Oxford']['avg_CEFR']+output_json['CEFR']['Japanese']['avg_CEFR']+output_json['Freq']['Tv']['avg_CEFR']+output_json['Freq']['Simpson']['avg_CEFR']+output_json['Freq']['Gutenberg']['avg_CEFR']) / 5
         return json.dumps(output_json, indent=4)
+
+wa = WordAnalyzer()
+nytimes= 'In the deadliest day in Myanmar since the Feb. 1 military coup, dozens of people, and perhaps more than 100, were killed on Saturday by security forces cracking down on nationwide protests.\n\nAmong those fatally shot on Saturday were a 5-year-old boy, two 13-year-old boys and a 14-year-old girl. A baby girl in Yangon, Myanmar\u2019s largest city, was struck in the eye with a rubber bullet, although her parents said she was expected to survive.\n\n\u201cToday is a day of shame for the armed forces,\u201d Dr. Sasa, a spokesman for a group of elected officials who say they represent Myanmar\u2019s government, said in a statement. The killings also drew condemnation from countries around the word, including the United States, Britain and the European Union.\n\nOn Saturday, the U.S. ambassador to Myanmar, Thomas L. Vajda, said security forces were \u201cmurdering unarmed civilians, including children,\u201d and he called the bloodshed \u201chorrifying.\u201d\n\nBritain\u2019s foreign secretary, Dominic Raab, called Saturday\u2019s killings \u201ca new low\u201d in a Twitter post.\n\nThe widespread killings, which took place in more than two dozen cities across the country, came a day after military-run television threatened protesters with getting \u201cshot in the back and the back of the head\u201d if they persisted in opposing military rule. Many of Saturday\u2019s victims were bystanders.\n\n'
+test = 'As few as one and as many as 15 students have taken part in the series of 20-minute calls. Schwinn checks on their mental and physical health during the meetings. She tries to lift their spirits. And she asks them if the university is meeting their needs.'
+wiki = "The COVID-19 pandemic, also known as the coronavirus pandemic, is an ongoing global pandemic of coronavirus disease 2019 (COVID-19) caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). It was first identified in December 2019 in Wuhan, China. The World Health Organization declared the outbreak a Public Health Emergency of International Concern on 20 January 2020, and later a pandemic on 11 March 2020. As of 28 March 2021, more than 127 million cases have been confirmed, with more than 2.78 million deaths attributed to COVID-19, making it one of the deadliest pandemics in history.\n\nSymptoms of COVID-19 are highly variable, ranging from none to life-threatening illness. The virus spreads mainly through the air when people are near each other.[b] It leaves an infected person as they breathe, cough, sneeze, or speak and enters another person via their mouth, nose, or eyes. It may also spread via contaminated surfaces. People remain contagious for up to two weeks, and can spread the virus even if they are asymptomatic.[8][9]\n\nRecommended preventive measures include social distancing, wearing face masks in public, ventilation and air-filtering, hand washing, covering one's mouth when sneezing or coughing, disinfecting surfaces, and monitoring and self-isolation for people exposed or symptomatic. Several vaccines are being developed and distributed. Current treatments focus on addressing symptoms while work is underway to develop therapeutic drugs that inhibit the virus. Authorities worldwide have responded by implementing travel restrictions, lockdowns, workplace hazard controls, and facility closures. Many places have also worked to increase testing capacity and trace contacts of the infected.[9]\n\nThe pandemic has resulted in significant global social and economic disruption, including the largest global recession since the Great Depression.[10] It led to widespread supply shortages exacerbated by panic buying, agricultural disruption and food shortages, and decreased emissions of pollutants and greenhouse gases. Many educational institutions and public areas have been partially or fully closed, and many events have been cancelled or postponed. Misinformation has circulated through social media and mass media. The pandemic has raised issues of racial and geographic discrimination, health equity, and the balance between public health imperatives and individual rights."
+
+with open('./analyze_result/test_output.json', 'wt', encoding='utf-8') as f:
+    f.write(wa.analyzeText(test))
