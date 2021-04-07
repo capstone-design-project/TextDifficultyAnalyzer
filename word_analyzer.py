@@ -1,6 +1,7 @@
 # 다양한 단어 메타 데이터 자료를 활용하여 유의미한 정보를 추출하기 위한 도구들
 import nltk
 import json
+from collections import defaultdict
 from nltk.tag.brill import Word
 from numpy import False_
 import pandas as pd
@@ -9,11 +10,19 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from nltk.tokenize import sent_tokenize
+from nltk import pos_tag
+from nltk.stem.wordnet import wordnet as wn
 lemma = WordNetLemmatizer()
 stem = PorterStemmer()
 # nltk.download('stopwords')
 # nltk.download('wordnet')
 # nltk.download('punkt')
+# nltk.download('averaged_perceptron_tagger')
+
+pos_map = defaultdict(lambda : wn.NOUN)
+pos_map['J'] = wn.ADJ
+pos_map['V'] = wn.VERB
+pos_map['R'] = wn.ADV
 
 
 class WordAnalyzer:
@@ -32,11 +41,12 @@ class WordAnalyzer:
         return clean_text
     #텍스트를 단어 리스트로 변환(stopword 적용)
     def text2list(self, text):
-        return [word for word in text.lower().split() if not word in set(stopwords.words('english'))]
+        return list(set([word for word in text.lower().split() if not word in set(stopwords.words('english'))]))
     #stemming , 어간 추출을 통해 단어를 원형으로 복원한다.
     def stemming(self, text2list):
+        tag_list = pos_tag(text2list)
         # return list(map(lambda x : stem.stem(x),text2list))
-        return list(map(lambda x : lemma.lemmatize(x),text2list))  
+        return list(map(lambda x : lemma.lemmatize(x[0] , pos_map[x[1][0]]),tag_list))  
 
     ###### DCL 부 ############
     # Dale Chall List 에 기반한 uncommon word 확인(리스트에 없으면 uncommon)
@@ -162,12 +172,14 @@ class WordAnalyzer:
         output_json['CEFR']['Japanese']['classified_words'] = self.extractCEFR(word_list_stem,self.japanese_CEFR)
         output_json['CEFR']['Japanese']['avg_CEFR'] = self.calAvgCEFR(output_json['CEFR']['Japanese']['classified_words'], total_words)
 
-        output_json['Freq']['Tv']['classified_words'] = self.extractFreq(word_list,self.tv_freq_10000)
+        output_json['Freq']['Tv']['classified_words'] = self.extractFreq(word_list_stem,self.tv_freq_10000)
         output_json['Freq']['Tv']['avg_CEFR'] = self.calAvgCEFR(output_json['Freq']['Tv']['classified_words'], total_words)
-        output_json['Freq']['Simpson']['classified_words'] = self.extractFreq(word_list,self.simpson_freq_5000)
+        output_json['Freq']['Simpson']['classified_words'] = self.extractFreq(word_list_stem,self.simpson_freq_5000)
         output_json['Freq']['Simpson']['avg_CEFR'] = self.calAvgCEFR(output_json['Freq']['Simpson']['classified_words'], total_words)
-        output_json['Freq']['Gutenberg']['classified_words'] = self.extractFreq(word_list,self.pg_freq_10000)
+        output_json['Freq']['Gutenberg']['classified_words'] = self.extractFreq(word_list_stem,self.pg_freq_10000)
         output_json['Freq']['Gutenberg']['avg_CEFR'] = self.calAvgCEFR(output_json['Freq']['Gutenberg']['classified_words'], total_words)
 
         output_json['Total_avg_CEFR'] = (output_json['CEFR']['Oxford']['avg_CEFR']+output_json['CEFR']['Japanese']['avg_CEFR']+output_json['Freq']['Tv']['avg_CEFR']+output_json['Freq']['Simpson']['avg_CEFR']+output_json['Freq']['Gutenberg']['avg_CEFR']) / 5
         return json.dumps(output_json, indent=4)
+
+
